@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <style>
+    .daily{
+        font-size: 2rem;
+        font-weight: bold;
+        font-family: sacramento;
+        color: rgb(4, 90, 61);
+    }
+    #lat , #long{
+        color: red
+        ;
+    }
+    </style>
+</head>
+<body>
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    What's the weather like?
+                </h1>
+                <div class="">
+                    <a class="button is_success" href="{% url 'city' %}">Search City</a>
+                    <a class="button is_success" href="{% url 'current' %}">Today Forecast</a>
+                    <a class="button is_" href="{% url 'daily' %}">Daily Forecast</a>
+                   </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                
+            <div class="columns">
+                <div class="column daily is-offset-4 is-4">
+                    <h1 class="">Today Weather Forecast</h1>
+                    </div>
+
+                    </div>
+            </div>
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST" onsubmit="return regularexp()">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded ">
+                        
+                                {{form.as_p}} 
+                                
+                                <span id="lat"></span>
+                                <span id="long"></span>
+                                <br> <br>
+                                  <div class="control ">
+                                    <button class="button is-info">
+                                        Check Weather
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="rows">
+                <div class="column is-offset-4 is-3">
+                    <section>
+                         <div>
+                        
+                             {% for w in weather_data %}
+                             {% if w %}
+                             <p id="cityid" value="{{w.id}}"></p>
+                             {% endif  %}
+                            
+                             {% endfor %}
+                             
+                            </div>
+                                <div id="openweathermap-widget-15">
+                                </div>
+                            </section>
+                            
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <script>
+        
+        function regularexp() {
+           var value1 = document.getElementById("id_lat").value;
+           var value2 = document.getElementById("id_long").value;
+
+           if (isNaN(value1))
+           {
+               document.getElementById("lat").innerHTML = "Please Enter Numeric or Decimal Value" ;
+               return false;
+               
+            }
+            if(isNaN(value2))
+            {
+              document.getElementById("long").innerHTML =  "Please Enter Numeric or Decimal Value"; 
+              return false;
+              
+            }
+
+
+        }
+        
+     </script>
+
+
+
+
+
+
+
+                <script src='//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
+                <script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
+                    let val = document.getElementById('cityid');
+                    let c = val.getAttribute("value"); 
+        
+                 window.myWidgetParam.push({ id: 15, cityid:c, appid: 'becfafca3d852ad367a137212613044f', units: 'metric', containerid: 'openweathermap-widget-15', });
+                  (function () { var script = document.createElement('script');
+                   script.async = true;
+                    script.charset = "utf-8";
+                     script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+                      var s = document.getElementsByTagName('script')[0];
+                       s.parentNode.insertBefore(script, s); })();
+                </script>
+
+
+
+</body>
+</html>
